@@ -1,111 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SWAG DRIP STORE</title>
-    <link rel="stylesheet" href="static/styles/style.css">
+    <link rel="stylesheet" href="static/styles/style.css" />
     <style>
-        #cart-container {
-            position: absolute;
-            top: 70%;
-            transform: translateY(-50%);
-            right: 20px;
-            display: flex;
-            align-items: center;
-        }
-        
-        #cart-label {
-            margin-right: 5px;
-            color: white;
-        }
-        
-        #cart-image {
-            margin-right: 5px;
-        }
-        
-        #cart-count {
-            font-weight: bold;
-        }
+      #cart-container {
+        position: absolute;
+        top: 70%;
+        transform: translateY(-50%);
+        right: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      #cart-label {
+        margin-right: 5px;
+        color: white;
+      }
+
+      #cart-image {
+        margin-right: 5px;
+      }
+
+      #cart-count {
+        font-weight: bold;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>SWAG DRIP STORE</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Главная</a></li>
-                <li><a href="about.html">О нас</a></li>
-                <li><a href="diligence.html">Пособие по уходу</a></li>
-            </ul>
-        </nav>
-        <div id="cart-container">
-            <a href="payment.html" id="cart-container">
-                <img id="cart-image" src="static\img\cart.png" alt="Cart image">
-            </a>
-            <span id="cart-count">0</span>
-        </div>
+      <h1>SWAG DRIP STORE</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="about.html">О нас</a></li>
+          <li><a href="diligence.html">Пособие по уходу</a></li>
+        </ul>
+      </nav>
+      <div id="cart-container">
+        <a href="payment.html" id="cart-container">
+          <img id="cart-image" src="static\img\cart.png" alt="Cart image" />
+        </a>
+        <span id="cart-count">0</span>
+      </div>
     </header>
 
     <main>
-        <section class="products">
-            {% for product in products %}
-            <div class="product-images">
-                <img src="static\img\switer-face.jpg" alt="Product 1 - Image 1">
-                <img src="static\img\switer-back.jpg" alt="Product 1 - Image 2">
-                <button class="prev-btn">&lt;</button>
-                <button class="next-btn">&gt;</button>
-            </div>
-            <h2>{{ product.name }}</h2>
-            <p>Цена: ${{ product.price }}</p>
-            <button class="cart-btn">Добавить в корзину</button>
-            {% endfor %}
-        </section>
+      <section class="products">
+        {% for product in products %}
+        <div class="product-images">
+          <img
+            src="static\img\{{ product.pict }}.jpg"
+            alt="Product 1 - Image 1"
+          />
+          <button class="prev-btn">&lt;</button>
+          <button class="next-btn">&gt;</button>
+        </div>
+        <h2>{{ product.name }}</h2>
+        <p>Цена: ${{ product.price }}</p>
+        <button class="cart-btn">Добавить в корзину</button>
+        {% endfor %}
+      </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 SWAG DRIP STORE. Все права защищены.</p>
+      <p>&copy; 2024 SWAG DRIP STORE. Все права защищены.</p>
     </footer>
 
     <script>
-        document.querySelectorAll('.product-card').forEach(card => {
-            const images = card.querySelectorAll('.product-images img');
-            let currentImageIndex = 0;
+      document.querySelectorAll(".product-card").forEach((card) => {
+        const images = card.querySelectorAll(".product-images img");
+        let currentImageIndex = 0;
 
-            function showImage(index) {
-                images.forEach(image => image.style.display = 'none');
-                images[index].style.display = 'block';
-            }
-
-            showImage(currentImageIndex);
-
-            card.querySelector('.next-btn').addEventListener('click', () => {
-                currentImageIndex = (currentImageIndex === images.length - 1) ? 0 : currentImageIndex + 1;
-                showImage(currentImageIndex);
-            });
-
-            card.querySelector('.prev-btn').addEventListener('click', () => {
-                currentImageIndex = (currentImageIndex === 0) ? images.length - 1 : currentImageIndex - 1;
-                showImage(currentImageIndex);
-            });
-        });
-    </script>
-    <script>
-        let cartCount = 0;
-
-        function updateCartCount() {
-            const cartCountElement = document.getElementById('cart-count');
-            cartCountElement.textContent = cartCount;
+        function showImage(index) {
+          images.forEach((image) => (image.style.display = "none"));
+          images[index].style.display = "block";
         }
 
-        document.querySelectorAll('.cart-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                cartCount++;
-                updateCartCount();
-            });
+        showImage(currentImageIndex);
+
+        card.querySelector(".next-btn").addEventListener("click", () => {
+          currentImageIndex =
+            currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1;
+          showImage(currentImageIndex);
         });
+
+        card.querySelector(".prev-btn").addEventListener("click", () => {
+          currentImageIndex =
+            currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1;
+          showImage(currentImageIndex);
+        });
+      });
     </script>
-</body>
+    <script>
+      let cartCount = 0;
+
+      function updateCartCount() {
+        const cartCountElement = document.getElementById("cart-count");
+        cartCountElement.textContent = cartCount;
+      }
+
+      document.querySelectorAll(".cart-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          cartCount++;
+          updateCartCount();
+        });
+      });
+    </script>
+  </body>
 </html>
-
-
