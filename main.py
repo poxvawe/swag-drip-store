@@ -1,9 +1,9 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from data import db_session
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-ref = "https://www.youtube.com/watch?v=hlwlM4a5rxg"
 
 
 def main():
@@ -16,4 +16,5 @@ def index():
 
 
 if __name__ == '__main__':
+    db_session.global_init("db/store.db")
     main()
