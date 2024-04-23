@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Registration</title>
     <link rel="stylesheet" href="../static/styles/logform.css" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -12,27 +12,28 @@
   </head>
   <body>
     <div class="wrapper">
-      <form action="{{ url_for('login') }}" method="post">
-        <h1>Login</h1>
+      <form action="{{ url_for('register') }}" method="post">
+        <h1>Registration</h1>
         {{ form.hidden_tag() }}
         <div class="input-box">
           {{ form.username.label }} {{ form.username() }}
           <i class="bx bx-user"></i>
         </div>
         <div class="input-box">
+          {{ form.email.label }} {{ form.email() }}
+          <i class="bx bx-envelope"></i>
+        </div>
+        <div class="input-box">
           {{ form.password.label }} {{ form.password() }}
           <i class="bx bx-lock-open"></i>
         </div>
-        <div class="remember-forgot">
-          {{ form.remember() }} {{ form.remember.label }}
+        <div class="input-box">
+          {{ form.confirm_password.label }} {{ form.confirm_password() }}
+          <i class="bx bx-lock-open"></i>
         </div>
-        <button type="submit" class="btn">Войти</button>
+        <button type="submit" class="btn">Зарегистрироваться</button>
         <div class="register-link">
-          <p>
-            Нет аккаунта?<a href="{{ url_for('register') }}"
-              >Зарегистрироваться</a
-            >
-          </p>
+          <p>Уже есть аккаунт?<a href="{{ url_for('login') }}">Войти</a></p>
         </div>
       </form>
     </div>
