@@ -13,10 +13,10 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     name = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=False)
     password_hash = sqlalchemy.Column(sqlalchemy.String, nullable=False)
-    items = orm.relationship("Product", back_populates='name')
+    items = orm.relationship("Product", back_populates='seller', lazy=True)
 
     def set_password(self, password):
-        self.hashed_password = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.hashed_password, password)
+        return check_password_hash(self.password_hash, password)
