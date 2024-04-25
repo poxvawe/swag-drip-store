@@ -10,8 +10,8 @@ from forms.user_form import RegistrationForm, LoginForm
 from forms.addprod_form import AddProductForm
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
-from io import BytesIO
 import os
+from data.db_methods import Thing
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -21,7 +21,8 @@ db = SQLAlchemy(app)
 
 api = Api(app)
 
-login_manager = LoginManager()
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 login_manager.init_app(app)
 
 
@@ -37,8 +38,24 @@ def main():
 
 @app.route('/')
 def index():
-    session = db_session.create_session()
-    return render_template('index.html', title='Главная')
+    products = Thing.get_all()
+    return render_template('index.html', title='SWAG DRIP STORE - Главная', products=products)
+
+
+@app.route('/about', methods=['GET', 'POST'])
+def about():
+    return render_template('about.html', title='О НАС')
+
+
+@app.route('/diligence', methods=['GET', 'POST'])
+def diligence():
+    return render_template('diligence.html', title='Пособие по уходу')
+
+
+@app.route('/payment', methods=['GET', 'POST'])
+@login_required
+def payment():
+    return render_template('payment.html', title='Оплата')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -51,7 +68,7 @@ def register():
         session.add(user)
         session.commit()
         return redirect('/')
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Регистрация', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -63,7 +80,7 @@ def login():
         if user is not None and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
             return redirect('/')
-    return render_template('loginform.html', title='Sign In', form=form)
+    return render_template('loginform.html', title='Войти', form=form)
 
 
 @app.route('/add_product', methods=['GET', 'POST'])
@@ -89,7 +106,14 @@ def add_product():
             return redirect('/')
         else:
             print("Изображение не выбрано")
-    return render_template('new_product.html', title='Add product', form=form)
+    return render_template('new_product.html', title='Добавить товар', form=form)
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect('/')
 
 
 if __name__ == '__main__':

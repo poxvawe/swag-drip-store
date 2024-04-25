@@ -34,13 +34,29 @@
       <h1>SWAG DRIP STORE</h1>
       <nav>
         <ul>
-          <li><a href="index.html">Главная</a></li>
-          <li><a href="about.html">О нас</a></li>
-          <li><a href="diligence.html">Пособие по уходу</a></li>
+          <li>
+            <a href="{{ url_for('index') }}">Главная</a>
+          </li>
+          <li>
+            <a href="{{ url_for('about') }}">О нас</a>
+          </li>
+          <li>
+            <a href="{{ url_for('diligence') }}">Пособие по уходу</a>
+          </li>
         </ul>
+        <div id="user-actions">
+          {% if current_user.is_authenticated %}
+          <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit" class="btn-auth">Выйти</button>
+          </form>
+          {% else %}
+          <a href="{{ url_for('login') }}" class="btn-auth">Авторизоваться</a>
+          {% endif %}
+        </div>
       </nav>
+
       <div id="cart-container">
-        <a href="payment.html" id="cart-container">
+        <a href="{{ url_for('payment') }}" id="cart-container">
           <img id="cart-image" src="static\img\cart.png" alt="Cart image" />
         </a>
         <span id="cart-count">0</span>
@@ -50,17 +66,30 @@
     <main>
       <section class="products">
         {% for product in products %}
-        <div class="product-images">
-          <img
-            src="static\img\{{ product.pict }}.jpg"
-            alt="Product 1 - Image 1"
-          />
-          <button class="prev-btn">&lt;</button>
-          <button class="next-btn">&gt;</button>
+        <div class="product-card">
+          <div class="product-images">
+            <img
+              src="data:image/jpeg;base64,{{ product.get_image_base64() }}"
+              alt="Product Image"
+            />
+          </div>
+          <h2>{{ product.name }}</h2>
+          <p>Цена: ${{ product.price }}</p>
+          <button
+            class="cart-btn"
+            {%
+            if
+            not
+            current_user.is_authenticated
+            %}
+            disabled
+            {%
+            endif
+            %}
+          >
+            Добавить в корзину
+          </button>
         </div>
-        <h2>{{ product.name }}</h2>
-        <p>Цена: ${{ product.price }}</p>
-        <button class="cart-btn">Добавить в корзину</button>
         {% endfor %}
       </section>
     </main>

@@ -171,3 +171,26 @@ footer {
 .prev-btn:hover {
     background-color: rgba(221, 53, 15, 0.572);
 }
+
+#user-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+
+.btn-auth {
+  background-color: #c7bd2e;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-auth:hover {
+  background-color: #96c024;
+}
+

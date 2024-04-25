@@ -16,3 +16,6 @@ class Product(SqlAlchemyBase, SerializerMixin):
     seller_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id'), nullable=False)
     seller = orm.relationship('User')
     image = sqlalchemy.Column(sqlalchemy.BLOB)
+
+    def __repr__(self):
+        return f"<Product {self.name}>"
