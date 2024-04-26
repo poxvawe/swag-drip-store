@@ -43,6 +43,14 @@
           <li>
             <a href="{{ url_for('diligence') }}">Пособие по уходу</a>
           </li>
+          <li>
+            {% if current_user.is_authenticated %}
+          <form action="{{ url_for('logout') }}" method="post">
+            <a href="{{ url_for('add_product') }}">Добавить товар</a>
+          </form>
+          {% else %}
+          {% endif %}
+          </li>
         </ul>
         <div id="user-actions">
           {% if current_user.is_authenticated %}
