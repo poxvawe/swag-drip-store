@@ -10,3 +10,4 @@ SQLAlchemy
 SQLAlchemy-serializer
 Werkzeug
 WTForms
+urllib3
