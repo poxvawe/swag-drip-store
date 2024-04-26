@@ -4,7 +4,6 @@ from data.cart_model import CartItem
 from data.product_model import Product
 from data.user_model import User
 from flask_restful import Api
-from requests import get, post, delete
 from data import db_session
 from forms.user_form import RegistrationForm, LoginForm
 from forms.addprod_form import AddProductForm
