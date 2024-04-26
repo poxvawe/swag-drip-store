@@ -63,6 +63,10 @@ def register():
     session = db_session.create_session()
     form = RegistrationForm()
     if form.validate_on_submit():
+        if form.password.data != form.confirm_password.data:
+            return render_template('register.html', title='Регистрация', form=form)
+        if session.query(User).filter(User.email == form.email.data).first():
+            return render_template('register.html', title='Регистрация', form=form)
         user = User(name=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         session.add(user)
