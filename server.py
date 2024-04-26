@@ -59,31 +59,37 @@ def payment():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    session = db_session.create_session()
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        if form.password.data != form.confirm_password.data:
-            return render_template('register.html', title='Регистрация', form=form)
-        if session.query(User).filter(User.email == form.email.data).first():
-            return render_template('register.html', title='Регистрация', form=form)
-        user = User(name=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        session.add(user)
-        session.commit()
+    if current_user.is_authenticated:
         return redirect('/')
-    return render_template('register.html', title='Регистрация', form=form)
+    else:
+        session = db_session.create_session()
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            if form.password.data != form.confirm_password.data:
+                return render_template('register.html', title='Регистрация', form=form)
+            if session.query(User).filter(User.email == form.email.data).first():
+                return render_template('register.html', title='Регистрация', form=form)
+            user = User(name=form.username.data, email=form.email.data)
+            user.set_password(form.password.data)
+            session.add(user)
+            session.commit()
+            return redirect('/')
+        return render_template('register.html', title='Регистрация', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        session = db_session.create_session()
-        user = session.query(User).filter(User.name == form.username.data).first()
-        if user is not None and user.check_password(form.password.data):
-            login_user(user, remember=form.remember.data)
-            return redirect('/')
-    return render_template('loginform.html', title='Войти', form=form)
+    if current_user.is_authenticated:
+        return redirect('/')
+    else:
+        form = LoginForm()
+        if form.validate_on_submit():
+            session = db_session.create_session()
+            user = session.query(User).filter(User.name == form.username.data).first()
+            if user is not None and user.check_password(form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect('/')
+        return render_template('loginform.html', title='Войти', form=form)
 
 
 @app.route('/add_product', methods=['GET', 'POST'])
